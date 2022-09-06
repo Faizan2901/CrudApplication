@@ -3,25 +3,26 @@ package com.faizan.com.crud.app;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class DatabaseService {
 	static boolean isTrue = false;
-	static String adminCheck = "SELECT * FROM compnay.admin where Username=? and Password=?";
-	static String showCust = "SELECT custId,custName,custEmail,custPhone FROM compnay.customer";
-	static String showAllOrder = "SELECT * FROM compnay.orders";
-	static String deleteCustomer = "DELETE FROM compnay.customer WHERE custId=?";
-	static String checkredundentemail = "SELECT * FROM compnay.customer WHERE custEmail=?";
-	static String checkredundentphone = "SELECT * FROM compnay.customer WHERE custPhone=?";
-	static String insertCustomer = "INSERT INTO compnay.customer (custName,custEmail,custPhone,custPassword) values (?,?,?,?)";
-	static String checkCustomer = "SELECT custName FROM compnay.customer WHERE custEmail=? and custPassword=?";
-	static String getMenu = "SELECT * FROM compnay.menu";
-	static String getCustId = "SELECT custId FROM compnay.customer WHERE custEmail=?";
-	static String getFoodId = "SELECT * FROM compnay.menu WHERE foodId=?";
-	static String insertCustomerOrder = "INSERT INTO compnay.orders (custId,foodId,quantity,totalPrice,foodName) VALUES (?,?,?,?,?)";
-	static String showOrderForParticularId = "SELECT foodId,quantity,foodName FROM compnay.orders WHERE custId=?";
-	static String deleteOrder = "DELETE FROM compnay.orders WHERE custId=? and foodId=?";
-	static String showOrderForParticularId1 = "SELECT foodId,quantity,totalPrice,foodName FROM compnay.orders WHERE custId=?";
+	static String adminCheck = "SELECT * FROM compnay.Admin where Username=? and Password=?";
+	static String showCust = "SELECT custId,custName,custEmail,custPhone FROM compnay.Customer";
+	static String showAllOrder = "SELECT * FROM compnay.Orders";
+	static String deleteCustomer = "DELETE FROM compnay.Customer WHERE custId=?";
+	static String checkredundentemail = "SELECT * FROM compnay.Customer WHERE custEmail=?";
+	static String checkredundentphone = "SELECT * FROM compnay.Customer WHERE custPhone=?";
+	static String insertCustomer = "INSERT INTO compnay.Customer (custName,custEmail,custPhone,custPassword) values (?,?,?,?)";
+	static String checkCustomer = "SELECT custName FROM compnay.Customer WHERE custEmail=? and custPassword=?";
+	static String getMenu = "SELECT * FROM compnay.Menu";
+	static String getCustId = "SELECT custId FROM compnay.Customer WHERE custEmail=?";
+	static String getFoodId = "SELECT * FROM compnay.Menu WHERE foodId=?";
+	static String insertCustomerOrder = "INSERT INTO compnay.Orders (custId,foodId,quantity,totalPrice,foodName) VALUES (?,?,?,?,?)";
+	static String showOrderForParticularId = "SELECT foodId,quantity,foodName FROM compnay.Orders WHERE custId=?";
+	static String deleteOrder = "DELETE FROM compnay.Orders WHERE custId=? and foodId=?";
+	static String showOrderForParticularId1 = "SELECT foodId,quantity,totalPrice,foodName FROM compnay.Orders WHERE custId=?";
 	
 	
 	
@@ -253,6 +254,7 @@ public class DatabaseService {
 			int rows = insertClient.executeUpdate();
 			if (rows > 0) {
 				isTrue = true;
+				System.out.println("You Are Successfully Registered and Now do Sign In for Our Service");
 
 			}
 		} catch (Exception e) {
@@ -342,7 +344,7 @@ public class DatabaseService {
 
 	public boolean checkQuantity(String quan) {
 		isTrue = false;
-		if (quan.matches("[0-9]+")) {
+		if (quan.matches("[1-9]+")) {
 			isTrue = true;
 		}
 		return isTrue;
@@ -379,16 +381,32 @@ public class DatabaseService {
 		return isTrue;
 	}
 
+	public boolean showAllOrderForCustId0(int id) {
+		isTrue=false;
+		try {
+			showOrder.setInt(1, id);
+			ResultSet rs = showOrder.executeQuery();
+			if(rs.next()) {
+				isTrue=true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return isTrue;
+	}
+	
 	public void showAllOrderForCustId(int id) {
 
 		try {
 			showOrder.setInt(1, id);
 			ResultSet rs = showOrder.executeQuery();
-			System.out.println("FoodId\tQuantity\tFoodName");
+			System.out.println("\nFoodId\tQuantity\tFoodName");
 			while (rs.next()) {
 				System.out.println(rs.getInt("foodId") + "\t" +  rs.getInt("quantity")
 						+ "\t" + rs.getString("foodName"));
 			}
+			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

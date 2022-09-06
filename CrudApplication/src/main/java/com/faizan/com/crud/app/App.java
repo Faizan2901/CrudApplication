@@ -19,7 +19,7 @@ public class App {
 		while (isRun) {
 			System.out.println("\n1. Admin");
 			System.out.println("2. Customer");
-			System.out.println("3. Exit from System");
+			System.out.println("3. Exit from System\n");
 			String choice = null;
 			boolean isTrue = false;
 			while (!isTrue) {
@@ -37,9 +37,9 @@ public class App {
 			switch (choice) {
 			case "1":
 				System.out.println("Please Give Admin Credentials: ");
-				System.out.println("Enter Username:- ");
+				System.out.print("Enter Username:- ");
 				String uname = sc.next();
-				System.out.println("Enter Password:- ");
+				System.out.print("Enter Password:- ");
 				String upass = sc.next();
 				boolean isTrue1 = ds.isAdminCheck(new Admin(uname, upass));
 				if (isTrue1) {
@@ -50,7 +50,7 @@ public class App {
 						System.out.println("1. Show all Customer");
 						System.out.println("2. Show all Order");
 						System.out.println("3. Delete Customer");
-						System.out.println("4. Exit from Admin Page");
+						System.out.println("4. Exit from Admin Page\n");
 
 						String choice1 = null;
 						boolean isTrue2 = false;
@@ -95,7 +95,7 @@ public class App {
 						case "4":
 							isRunning = true;
 							isTrue = true;
-							System.out.println("Thank you Admin");
+							System.out.println("Thank you Admin\n");
 							break;
 						default:
 							break;
@@ -109,7 +109,7 @@ public class App {
 				System.out.println("\n======Welcome to Food Mania======");
 				System.out.println("1. Sign Up");
 				System.out.println("2. Sign In");
-				System.out.println("3. Exit from Customer Page");
+				System.out.println("3. Exit from Customer Page\n");
 				String choice2 = null;
 				boolean isTrue4 = false;
 				while (!isTrue4) {
@@ -171,10 +171,10 @@ public class App {
 						boolean isRunning = false;
 						while (!isRunning) {
 
-							System.out.println("1. Place an Order");
+							System.out.println("\n1. Place an Order");
 							System.out.println("2. Cancel Order");
 							System.out.println("3. Show Bill");
-							System.out.println("4. Exit");
+							System.out.println("4. Exit\n");
 							String choice3 = null;
 							boolean isTrue5 = false;
 							while (!isTrue5) {
@@ -225,34 +225,44 @@ public class App {
 								break;
 							case "2":
 								int id=ds.getCustomerId(cname);
-								ds.showAllOrderForCustId(id);
-								System.out.println("Which Food you want to cancel?");
-								String like=null;
-								isCorrect=false;
-								while(!isCorrect){
-									System.out.print("Enter FoodId from your above Orderlist:- ");
-									like=sc.next();
-									isCorrect=ds.isChoiceCheck3(like);
-									if (isCorrect) {
-										break;
-									} else {
-										System.out.println("Please enter only Integer Value!!");
+								if(ds.showAllOrderForCustId0(id)) {
+									
+									ds.showAllOrderForCustId(id);
+									System.out.println("Which Food you want to cancel?");
+									String like=null;
+									isCorrect=false;
+									while(!isCorrect){
+										System.out.print("\nEnter FoodId from your above Orderlist:- ");
+										like=sc.next();
+										isCorrect=ds.isChoiceCheck3(like);
+										if (isCorrect) {
+											break;
+										} else {
+											System.out.println("Please enter only Integer Value!!");
+										}
+										
+										
 									}
-									
-									
+									ds.deleOrder(id, like);
+								}else {
+									System.out.println("\nYou have not placed order for any food!!\n");
 								}
-								ds.deleOrder(id, like);
 								
 								break;
 							case "3":
 								id=ds.getCustomerId(cname);
-								ds.showAllOrderForCustId1(id);
-								ds.totalBill(id);
+								if(ds.showAllOrderForCustId0(id)) {
+									ds.showAllOrderForCustId1(id);
+									ds.totalBill(id);
+									
+								}else {
+									System.out.println("\nYou have not placed order for any food!!\n");
+								}
 								break;
 							case "4":
 								isTrue = true;
 								isRunning = true;
-								System.out.println("Thank You visit again");
+								System.out.println("\nThank You visit again\n");
 								break;
 							default:
 								break;
@@ -270,7 +280,7 @@ public class App {
 				break;
 			case "3":
 				isRun = false;
-				System.out.println("Thank you");
+				System.out.println("\nThank you");
 				break;
 			default:
 				break;

@@ -6,7 +6,7 @@ public class ConnectionUtil {
 	private static final String DRIVER_PATH = "com.mysql.cj.jdbc.Driver";
 	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/compnay ";
 	private static final String USER_NAME = "root";
-	private static final String USER_PASSWORD = "faizan";
+	private static final String USER_PASSWORD = "P@ssw0rd@123";
 	
 	
 	public static Connection getConnection(){
