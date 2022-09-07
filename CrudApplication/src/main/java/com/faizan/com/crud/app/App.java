@@ -26,7 +26,7 @@ public class App {
 
 				System.out.print("Enter the choice:- ");
 				choice = sc.next();
-				isTrue = ds.isChoiceCheck(choice);
+				isTrue = Validation.isChoiceCheck(choice);
 				if (isTrue) {
 					break;
 				} else {
@@ -36,9 +36,14 @@ public class App {
 			}
 			switch (choice) {
 			case "1":
-				System.out.println("Please Give Admin Credentials: ");
-				System.out.print("Enter Username:- ");
-				String uname = sc.next();
+				System.out.println("Please Give Admin Credentials:\n ");
+				String uname=null;
+				boolean isCorrect=false;
+				while(!isCorrect) {
+					System.out.print("Enter Username:- ");
+					uname = sc.next();
+					isCorrect = Validation.isNameCheck(uname);
+				}
 				System.out.print("Enter Password:- ");
 				String upass = sc.next();
 				boolean isTrue1 = ds.isAdminCheck(new Admin(uname, upass));
@@ -58,7 +63,7 @@ public class App {
 
 							System.out.print("Enter the choice:- ");
 							choice1 = sc.next();
-							isTrue2 = ds.isChoiceCheck1(choice1);
+							isTrue2 = Validation.isChoiceCheck1(choice1);
 							if (isTrue2) {
 								break;
 							} else {
@@ -82,7 +87,7 @@ public class App {
 
 								System.out.print("Which Customer do want to delete:- ");
 								id = sc.next();
-								isTrue3 = ds.isChoiceCheck3(id);
+								isTrue3 = Validation.isChoiceCheck3(id);
 								if (isTrue3) {
 									break;
 								} else {
@@ -116,7 +121,7 @@ public class App {
 
 					System.out.print("Enter the choice:- ");
 					choice2 = sc.next();
-					isTrue4 = ds.isChoiceCheck4(choice2);
+					isTrue4 = Validation.isChoiceCheck(choice2);
 					if (isTrue4) {
 						break;
 					} else {
@@ -128,11 +133,11 @@ public class App {
 				case "1":
 					System.out.println("===Enter Your Information:=== ");
 					String name = null;
-					boolean isCorrect = false;
+					isCorrect = false;
 					while (!isCorrect) {
 						System.out.print("Enter Your Name:- ");
 						name = sc.next();
-						isCorrect = ds.isNameCheck(name);
+						isCorrect = Validation.isNameCheck(name);
 					}
 					String email = null;
 					isCorrect = false;
@@ -153,7 +158,7 @@ public class App {
 					while (!isCorrect) {
 						System.out.print("Enter Password:- ");
 						password = sc.next();
-						isCorrect = ds.isPasswordCheck(password);
+						isCorrect = Validation.isPasswordCheck(password);
 					}
 					ds.insertCust(new Customer(name, email, phone, password));
 					break;
@@ -181,7 +186,7 @@ public class App {
 
 								System.out.print("Enter the choice:- ");
 								choice3 = sc.next();
-								isTrue5 = ds.isChoiceCheck5(choice3);
+								isTrue5 = Validation.isChoiceCheck1(choice3);
 								if (isTrue5) {
 									break;
 								} else {
@@ -204,10 +209,17 @@ public class App {
 										while (!isTrue7) {
 											System.out.print("Enter Quantity:- ");
 											quan = sc.next();
-											isTrue7 = ds.checkQuantity(quan);
+											isTrue7 = Validation.checkQuantity(quan);
 										}
 										int id0 = ds.getCustomerId(cname);
-										isTrue6 = ds.insertOrder(id0, Integer.parseInt(fid), Integer.parseInt(quan));
+										int quantity=ds.checkAlreadyPresentFoodIdForCustomer(id0, Integer.parseInt(fid));
+										if(quantity>0) {
+											
+											isTrue6=ds.addQuantity(id0, Integer.parseInt(fid), quantity+Integer.parseInt(quan));
+										}else {
+											isTrue6 = ds.insertOrder(id0, Integer.parseInt(fid), Integer.parseInt(quan));
+											
+										}
 										if (isTrue6) {
 											System.out.println("Do you want to add something(Y/N) ");
 											String status = sc.next();
@@ -234,7 +246,7 @@ public class App {
 									while(!isCorrect){
 										System.out.print("\nEnter FoodId from your above Orderlist:- ");
 										like=sc.next();
-										isCorrect=ds.isChoiceCheck3(like);
+										isCorrect=Validation.isChoiceCheck3(like);
 										if (isCorrect) {
 											break;
 										} else {

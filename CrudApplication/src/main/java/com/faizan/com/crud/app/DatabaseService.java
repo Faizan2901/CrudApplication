@@ -5,50 +5,53 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class DatabaseService {
-	static boolean isTrue = false;
-	static String adminCheck = "SELECT * FROM compnay.Admin where Username=? and Password=?";
-	static String showCust = "SELECT custId,custName,custEmail,custPhone FROM compnay.Customer";
-	static String showAllOrder = "SELECT * FROM compnay.Orders";
-	static String deleteCustomer = "DELETE FROM compnay.Customer WHERE custId=?";
-	static String checkredundentemail = "SELECT * FROM compnay.Customer WHERE custEmail=?";
-	static String checkredundentphone = "SELECT * FROM compnay.Customer WHERE custPhone=?";
-	static String insertCustomer = "INSERT INTO compnay.Customer (custName,custEmail,custPhone,custPassword) values (?,?,?,?)";
-	static String checkCustomer = "SELECT custName FROM compnay.Customer WHERE custEmail=? and custPassword=?";
-	static String getMenu = "SELECT * FROM compnay.Menu";
-	static String getCustId = "SELECT custId FROM compnay.Customer WHERE custEmail=?";
-	static String getFoodId = "SELECT * FROM compnay.Menu WHERE foodId=?";
-	static String insertCustomerOrder = "INSERT INTO compnay.Orders (custId,foodId,quantity,totalPrice,foodName) VALUES (?,?,?,?,?)";
-	static String showOrderForParticularId = "SELECT foodId,quantity,foodName FROM compnay.Orders WHERE custId=?";
-	static String deleteOrder = "DELETE FROM compnay.Orders WHERE custId=? and foodId=?";
-	static String showOrderForParticularId1 = "SELECT foodId,quantity,totalPrice,foodName FROM compnay.Orders WHERE custId=?";
-	
-	
-	
 
-	static PreparedStatement delorder=null;
-	static PreparedStatement delOr = null;
-	static PreparedStatement showOrder = null;
-	static PreparedStatement inOrder = null;
-	static PreparedStatement adCheck = null;
-	static PreparedStatement showallCust = null;
-	static PreparedStatement showallor = null;
-	static PreparedStatement delcust = null;
-	static PreparedStatement checkemail = null;
-	static PreparedStatement checkPhone = null;
-	static PreparedStatement insertClient = null;
-	static PreparedStatement checkcust = null;
-	static PreparedStatement getOrder = null;
-	static PreparedStatement getCuid = null;
-	static PreparedStatement getFoId = null;
-	static PreparedStatement getFullOrder = null;
+	boolean isTrue = false;
+	String adminCheck = "SELECT * FROM compnay.Admin where Username=? and Password=?";
+	String showCust = "SELECT custId,custName,custEmail,custPhone FROM compnay.Customer";
+	String showAllOrder = "SELECT * FROM compnay.Orders";
+	String updateOrders = "UPDATE compnay.Orders SET quantity=?,totalPrice=? WHERE custId=? and foodId=?";
+	String deleteCustomer = "DELETE FROM compnay.Customer WHERE custId=?";
+	String checkredundentemail = "SELECT * FROM compnay.Customer WHERE custEmail=?";
+	String checkredundentphone = "SELECT * FROM compnay.Customer WHERE custPhone=?";
+	String insertCustomer = "INSERT INTO compnay.Customer (custName,custEmail,custPhone,custPassword) values (?,?,?,?)";
+	String checkCustomer = "SELECT custName FROM compnay.Customer WHERE custEmail=? and custPassword=?";
+	String getMenu = "SELECT * FROM compnay.Menu";
+	String getCustId = "SELECT custId FROM compnay.Customer WHERE custEmail=?";
+	String getFoodId = "SELECT * FROM compnay.Menu WHERE foodId=?";
+	String insertCustomerOrder = "INSERT INTO compnay.Orders (custId,foodId,quantity,totalPrice,foodName) VALUES (?,?,?,?,?)";
+	String showOrderForParticularId = "SELECT foodId,quantity,foodName FROM compnay.Orders WHERE custId=?";
+	String deleteOrder = "DELETE FROM compnay.Orders WHERE custId=? and foodId=?";
+	String showOrderForParticularId1 = "SELECT foodId,quantity,totalPrice,foodName FROM compnay.Orders WHERE custId=?";
+	String checkAlreadyPresentFoodId = "SELECT * FROM compnay.Orders WHERE custId=? and foodId=?";
+
+	PreparedStatement updateOrd = null;
+	PreparedStatement checkFoodId = null;
+	PreparedStatement delorder = null;
+	PreparedStatement delOr = null;
+	PreparedStatement showOrder = null;
+	PreparedStatement inOrder = null;
+	PreparedStatement adCheck = null;
+	PreparedStatement showallCust = null;
+	PreparedStatement showallor = null;
+	PreparedStatement delcust = null;
+	PreparedStatement checkemail = null;
+	PreparedStatement checkPhone = null;
+	PreparedStatement insertClient = null;
+	PreparedStatement checkcust = null;
+	PreparedStatement getOrder = null;
+	PreparedStatement getCuid = null;
+	PreparedStatement getFoId = null;
+	PreparedStatement getFullOrder = null;
 
 	public DatabaseService(Connection con) {
 
 		try {
 
-			delorder=con.prepareStatement(showOrderForParticularId1);
+			delorder = con.prepareStatement(showOrderForParticularId1);
+			updateOrd = con.prepareStatement(updateOrders);
+			checkFoodId = con.prepareStatement(checkAlreadyPresentFoodId);
 			delOr = con.prepareStatement(deleteOrder);
 			showOrder = con.prepareStatement(showOrderForParticularId);
 			inOrder = con.prepareStatement(insertCustomerOrder);
@@ -69,30 +72,6 @@ public class DatabaseService {
 			e.printStackTrace();
 		}
 
-	}
-
-	public boolean isChoiceCheck4(String choice) {
-		isTrue = false;
-		if (choice.matches("[1-3]")) {
-			isTrue = true;
-		}
-		return isTrue;
-	}
-
-	public boolean isChoiceCheck(String choice) {
-		isTrue = false;
-		if (choice.matches("[1-3]")) {
-			isTrue = true;
-		}
-		return isTrue;
-	}
-
-	public boolean isChoiceCheck1(String choice) {
-		isTrue = false;
-		if (choice.matches("[1-4]")) {
-			isTrue = true;
-		}
-		return isTrue;
 	}
 
 	public boolean isAdminCheck(Admin admin) {
@@ -146,20 +125,12 @@ public class DatabaseService {
 			if (row > 0) {
 				System.out.println("Customer is removed Successfully!");
 			} else {
-				System.out.println("Failed to delete Customer Data");
+				System.out.println("Customer Id " + id + " does not exists!");
 			}
 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-	}
-
-	public boolean isChoiceCheck3(String id) {
-		isTrue = false;
-		if (id.matches("[0-9]*")) {
-			isTrue = true;
-		}
-		return isTrue;
 	}
 
 	private void printCustomer(Customer cust) {
@@ -171,18 +142,6 @@ public class DatabaseService {
 	private void printAllOrders(Orders order) {
 		System.out.println(order.getCustId() + "    " + order.getFoodId() + "    " + order.getQuantity() + "    "
 				+ order.getTotalPrice() + "    " + order.getFoodName());
-	}
-
-	public boolean isNameCheck(String name) {
-		isTrue = false;
-
-		if (name.matches("[a-zA-Z]+")) {
-			isTrue = true;
-		} else {
-			System.out.println("Name only contain Alphabets!");
-		}
-
-		return isTrue;
 	}
 
 	public boolean isEmailCheck(String email) {
@@ -229,18 +188,6 @@ public class DatabaseService {
 			System.out.println("Phone number must be length of 10 and only contain Integer Values");
 		}
 		return isTrue;
-	}
-
-	public boolean isPasswordCheck(String password) {
-		isTrue = false;
-		if (password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
-			isTrue = true;
-		} else {
-			System.out.println(
-					"Password should be atleast 8 character long and atleast one uppercase and lowercase and Special character");
-		}
-		return isTrue;
-
 	}
 
 	public boolean insertCust(Customer cust) {
@@ -298,14 +245,6 @@ public class DatabaseService {
 		}
 	}
 
-	public boolean isChoiceCheck5(String choice) {
-		isTrue = false;
-		if (choice.matches("[1-4]")) {
-			isTrue = true;
-		}
-		return isTrue;
-	}
-
 	public boolean isFidCheck(String fid) {
 		isTrue = false;
 		if (fid.matches("[0-9]+")) {
@@ -342,19 +281,12 @@ public class DatabaseService {
 		return id;
 	}
 
-	public boolean checkQuantity(String quan) {
-		isTrue = false;
-		if (quan.matches("[1-9]+")) {
-			isTrue = true;
-		}
-		return isTrue;
-	}
-
 	public boolean insertOrder(int cId, int fId, int quan) {
 		isTrue = false;
 		int price = 0;
 		int totalamount = 0;
 		try {
+
 			getFullOrder.setInt(1, fId);
 			ResultSet rs = getFullOrder.executeQuery();
 			if (rs.next()) {
@@ -381,13 +313,40 @@ public class DatabaseService {
 		return isTrue;
 	}
 
+	public boolean addQuantity(int id, int fid, int quantity) {
+		isTrue = false;
+		int food_price = 0;
+		int total_price = 0;
+		try {
+			getFoId.setInt(1, fid);
+			ResultSet rs = getFoId.executeQuery();
+			if (rs.next()) {
+				food_price = rs.getInt("price");
+				total_price = food_price * quantity;
+				updateOrd.setInt(1, quantity);
+				updateOrd.setInt(2, total_price);
+				updateOrd.setInt(3, id);
+				updateOrd.setInt(4, fid);
+
+				int rows = updateOrd.executeUpdate();
+				if (rows > 0) {
+					isTrue = true;
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isTrue;
+	}
+
 	public boolean showAllOrderForCustId0(int id) {
-		isTrue=false;
+		isTrue = false;
 		try {
 			showOrder.setInt(1, id);
 			ResultSet rs = showOrder.executeQuery();
-			if(rs.next()) {
-				isTrue=true;
+			if (rs.next()) {
+				isTrue = true;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -395,7 +354,7 @@ public class DatabaseService {
 		}
 		return isTrue;
 	}
-	
+
 	public void showAllOrderForCustId(int id) {
 
 		try {
@@ -403,8 +362,8 @@ public class DatabaseService {
 			ResultSet rs = showOrder.executeQuery();
 			System.out.println("\nFoodId\tQuantity\tFoodName");
 			while (rs.next()) {
-				System.out.println(rs.getInt("foodId") + "\t" +  rs.getInt("quantity")
-						+ "\t" + rs.getString("foodName"));
+				System.out
+						.println(rs.getInt("foodId") + "\t" + rs.getInt("quantity") + "\t" + rs.getString("foodName"));
 			}
 			System.out.println();
 		} catch (Exception e) {
@@ -436,25 +395,42 @@ public class DatabaseService {
 			ResultSet rs = showOrder.executeQuery();
 			System.out.println("FoodId\tQuantity\tFoodName");
 			while (rs.next()) {
-				System.out.println(rs.getInt("foodId") + "\t" + rs.getInt("quantity") +"\t" + rs.getString("foodName"));
+				System.out
+						.println(rs.getInt("foodId") + "\t" + rs.getInt("quantity") + "\t" + rs.getString("foodName"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void totalBill(int id){
-		int totalPrice=0;
-		try{
+	public void totalBill(int id) {
+		int totalPrice = 0;
+		try {
 			delorder.setInt(1, id);
-			ResultSet rs=delorder.executeQuery();
-			while(rs.next()){
-				totalPrice=totalPrice+rs.getInt("totalPrice");
+			ResultSet rs = delorder.executeQuery();
+			while (rs.next()) {
+				totalPrice = totalPrice + rs.getInt("totalPrice");
 			}
-			System.out.println("Total Amount for your Order is:- "+totalPrice);
-		}catch (Exception e) {
+			System.out.println("Total Amount for your Order is:- " + totalPrice);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	public int checkAlreadyPresentFoodIdForCustomer(int id, int fid) {
+		int quantity = 0;
+		try {
+			checkFoodId.setInt(1, id);
+			checkFoodId.setInt(2, fid);
+			ResultSet rs = checkFoodId.executeQuery();
+			if (rs.next()) {
+				quantity = rs.getInt("quantity");
+				System.out.println("You have already placed an order for this " + fid + " and your quantity is added!");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return quantity;
 	}
 }
