@@ -87,7 +87,7 @@ public class App {
 
 								System.out.print("Which Customer do want to delete:- ");
 								id = sc.next();
-								isTrue3 = Validation.isChoiceCheck3(id);
+								isTrue3 = Validation.isChoiceCheck2(id);
 								if (isTrue3) {
 									break;
 								} else {
@@ -246,7 +246,7 @@ public class App {
 									while(!isCorrect){
 										System.out.print("\nEnter FoodId from your above Orderlist:- ");
 										like=sc.next();
-										isCorrect=Validation.isChoiceCheck3(like);
+										isCorrect=Validation.isChoiceCheck2(like);
 										if (isCorrect) {
 											break;
 										} else {

@@ -1,14 +1,9 @@
 package com.faizan.com.crud.app;
 
-
-
 public class Validation {
-	
-	static boolean isTrue=false;
-	
-	
-	
-	
+
+	static boolean isTrue = false;
+
 	public static boolean isChoiceCheck(String choice) {
 		isTrue = false;
 		if (choice.matches("[1-3]")) {
@@ -16,7 +11,6 @@ public class Validation {
 		}
 		return isTrue;
 	}
-	
 
 	public static boolean isNameCheck(String name) {
 		isTrue = false;
@@ -29,7 +23,7 @@ public class Validation {
 
 		return isTrue;
 	}
-	
+
 	public static boolean isChoiceCheck1(String choice) {
 		isTrue = false;
 		if (choice.matches("[1-4]")) {
@@ -37,26 +31,25 @@ public class Validation {
 		}
 		return isTrue;
 	}
-	
-	public static boolean isChoiceCheck3(String id) {
+
+	public static boolean isChoiceCheck2(String id) {
 		isTrue = false;
 		if (id.matches("[0-9]*")) {
 			isTrue = true;
 		}
 		return isTrue;
 	}
-	
+
 	public static boolean checkQuantity(String quan) {
 		isTrue = false;
 		if (quan.matches("[1-9]+")) {
 			isTrue = true;
-		}else {
+		} else {
 			System.out.println("Please enter valid Qauntity(Number)!");
 		}
 		return isTrue;
 	}
 
-	
 	public static boolean isPasswordCheck(String password) {
 		isTrue = false;
 		if (password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
