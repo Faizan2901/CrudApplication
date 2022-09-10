@@ -17,7 +17,8 @@ public class App {
 	public static void main(String[] args) {
 
 		while (isRun) {
-			System.out.println("\n1. Admin");
+			System.out.println("*-----------Welcome to Food Mania---------*");
+			System.out.println("1. Admin");
 			System.out.println("2. Customer");
 			System.out.println("3. Exit from System\n");
 			String choice = null;
@@ -175,8 +176,8 @@ public class App {
 						ds.getOrderMenu();
 						boolean isRunning = false;
 						while (!isRunning) {
-
-							System.out.println("\n1. Place an Order");
+							System.out.println("\n*---------Welcome to Food Mania---------*");
+							System.out.println("1. Place an Order");
 							System.out.println("2. Cancel Order");
 							System.out.println("3. Show Bill");
 							System.out.println("4. Exit\n");
@@ -292,7 +293,7 @@ public class App {
 				break;
 			case "3":
 				isRun = false;
-				System.out.println("\nThank you");
+				System.out.println("\nThank you for choosing our service!");
 				break;
 			default:
 				break;

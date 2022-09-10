@@ -3,7 +3,7 @@ package com.faizan.com.crud.app;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 public class DatabaseService {
 
@@ -107,8 +107,8 @@ public class DatabaseService {
 	public void getAllOrders() {
 		try {
 			ResultSet rs = showallor.executeQuery();
+			System.out.println("CustomerId\tFoodId\tQuantity\tTotalPrice\tFoodName");
 			while (rs.next()) {
-				System.out.println("CustomerId\tFoodId\tQuantity\tTotalPrice\tFoodName");
 				printAllOrders(new Orders(rs.getInt("custId"), rs.getInt("foodId"), rs.getInt("quantity"),
 						rs.getInt("totalPrice"), rs.getString("foodName")));
 			}
