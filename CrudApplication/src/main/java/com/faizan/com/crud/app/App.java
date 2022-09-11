@@ -9,6 +9,7 @@ import java.util.Scanner;
  */
 public class App {
 
+	static boolean isCorrect=false;
 	static Connection con = ConnectionUtil.getConnection();
 	public static Scanner sc = new Scanner(System.in);
 	static DatabaseService ds = new DatabaseService(con);
@@ -39,7 +40,7 @@ public class App {
 			case "1":
 				System.out.println("Please Give Admin Credentials:\n ");
 				String uname=null;
-				boolean isCorrect=false;
+				isCorrect=false;
 				while(!isCorrect) {
 					System.out.print("Enter Username:- ");
 					uname = sc.next();

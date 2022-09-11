@@ -42,7 +42,6 @@ public class DatabaseService {
 	PreparedStatement checkcust = null;
 	PreparedStatement getOrder = null;
 	PreparedStatement getCuid = null;
-	PreparedStatement getFoId = null;
 	PreparedStatement getFullOrder = null;
 
 	public DatabaseService(Connection con) {
@@ -66,7 +65,7 @@ public class DatabaseService {
 			checkcust = con.prepareStatement(checkCustomer);
 			getOrder = con.prepareStatement(getMenu);
 			getCuid = con.prepareStatement(getCustId);
-			getFoId = con.prepareStatement(getFoodId);
+		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -249,8 +248,8 @@ public class DatabaseService {
 		isTrue = false;
 		if (fid.matches("[0-9]+")) {
 			try {
-				getFoId.setInt(1, Integer.parseInt(fid));
-				ResultSet rs = getFoId.executeQuery();
+				getFullOrder.setInt(1, Integer.parseInt(fid));
+				ResultSet rs = getFullOrder.executeQuery();
 				if (rs.next()) {
 					isTrue = true;
 
@@ -318,8 +317,8 @@ public class DatabaseService {
 		int food_price = 0;
 		int total_price = 0;
 		try {
-			getFoId.setInt(1, fid);
-			ResultSet rs = getFoId.executeQuery();
+			getFullOrder.setInt(1, fid);
+			ResultSet rs = getFullOrder.executeQuery();
 			if (rs.next()) {
 				food_price = rs.getInt("price");
 				total_price = food_price * quantity;
