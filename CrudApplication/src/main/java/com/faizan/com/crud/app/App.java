@@ -18,7 +18,7 @@ public class App {
 	public static void main(String[] args) {
 
 		while (isRun) {
-			System.out.println("*-----------Welcome to Food Mania---------*");
+			System.out.println("\n*-----------Welcome to Food Mania---------*");
 			System.out.println("1. Admin");
 			System.out.println("2. Customer");
 			System.out.println("3. Exit from System\n");
@@ -38,14 +38,9 @@ public class App {
 			}
 			switch (choice) {
 			case "1":
-				System.out.println("Please Give Admin Credentials:\n ");
-				String uname=null;
-				isCorrect=false;
-				while(!isCorrect) {
-					System.out.print("Enter Username:- ");
-					uname = sc.next();
-					isCorrect = Validation.isNameCheck(uname);
-				}
+				System.out.println("\nPlease Give Admin Credentials:\n ");
+				System.out.print("Enter Username:- ");
+				String uname = sc.next();
 				System.out.print("Enter Password:- ");
 				String upass = sc.next();
 				boolean isTrue1 = ds.isAdminCheck(new Admin(uname, upass));
@@ -223,14 +218,28 @@ public class App {
 											
 										}
 										if (isTrue6) {
-											System.out.println("Do you want to add something(Y/N) ");
-											String status = sc.next();
-											if (status.equals("Y")) {
-												isTrue6 = false;
-											} else {
-												isTrue6 = true;
+											System.out.println("\nDo you want to add something?");
+											System.out.println("1. Yes");
+											System.out.println("2. No");
+											String status=null;
+											isCorrect=false;
+											while(!isCorrect){
+												System.out.print("Enter your choice:- ");
+												status = sc.next();
+												if(Validation.isChoiceCheck3(status)){
+													isCorrect=true;
+												}else{
+													System.out.println("Please enter correct choice!!");
+												}
 											}
-
+											switch (status) {
+											case "1":
+												isTrue6=false;
+												break;
+											case "2":
+												isTrue6=true;
+												break;
+											}
 										}
 									}
 

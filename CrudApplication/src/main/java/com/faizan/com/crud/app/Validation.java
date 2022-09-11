@@ -39,6 +39,15 @@ public class Validation {
 		}
 		return isTrue;
 	}
+	
+	public static boolean isChoiceCheck3(String choice) {
+		isTrue = false;
+		if (choice.matches("[1-2]")) {
+			isTrue = true;
+		}
+		return isTrue;
+	}
+
 
 	public static boolean checkQuantity(String quan) {
 		isTrue = false;
@@ -61,4 +70,5 @@ public class Validation {
 		return isTrue;
 
 	}
+	
 }

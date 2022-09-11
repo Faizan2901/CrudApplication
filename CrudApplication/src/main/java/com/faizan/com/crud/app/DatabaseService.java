@@ -82,7 +82,7 @@ public class DatabaseService {
 			if (rs.next()) {
 				isTrue = true;
 			} else {
-				System.out.println("You are not Authorized");
+				System.out.println("Your credentials are wrong!!");
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -233,6 +233,7 @@ public class DatabaseService {
 
 	public void getOrderMenu() {
 		try {
+			System.out.println("\n*--------Today Menu-------*");
 			ResultSet rs = getOrder.executeQuery();
 			System.out.println("FoodId\tFoodName\tPrice");
 			while (rs.next()) {
